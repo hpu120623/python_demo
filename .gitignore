@@ -96,5 +96,4 @@ ENV/
 .ropeproject
 
 # Custom settings
-.idea/
 data/
