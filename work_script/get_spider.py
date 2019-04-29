@@ -4,9 +4,7 @@ import dateparser
 import pymysql.cursors
 import requests
 import schedule
-from urllib.parse import quote,unquote
 
-from retrying import retry
 from openpyxl import load_workbook
 from retrying import retry
 
@@ -120,6 +118,14 @@ def insert_data(data_set):
 
 
 def run():
+    """
+    目的：本脚本用来获取缺失爬虫采集源
+    思路：
+        1.获取kibana和ag中的爬虫，建立集合，取差集得到未产生爬虫的采集源，但该差集中含有本身不会产生数据的爬虫
+        2.将该差集与不会产生爬虫的采集源再进行差集处理，得到最终真实的没有产生爬虫的采集源
+        3.将最终的数据插入到数据库中
+        4.由Django连接数据库显示至页面中
+    """
     # meta和search请求api
     request_list = ['http://cain.1datatech.cn/api/origins',
                     'http://cain.search.1datatech.cn/api/origins']
@@ -148,6 +154,7 @@ def run():
 
 if __name__ == '__main__':
     run()
+    # 初步使用定时器
     # schedule.every(5).minutes.do(run)
     # while True:
     #     schedule.run_pending()

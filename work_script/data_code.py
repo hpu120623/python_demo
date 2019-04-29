@@ -33,6 +33,13 @@ def open_media(news_dict):
     wb.save('new_media.xlsx')
 
 def main():
+    """
+    目的：本脚本用来获取两个excel表中数据对比，判断表1中数据是否存在表2，打标签
+    总结：
+        1.进行较大excel读取，使用openpyxl等库
+        2.涉及到数据结构，优化时间复杂度，建立字典（字典结构的设计）
+        3.可以考虑存储到内存redis中
+    """
     open_media(open_yu())
 
 if __name__ == '__main__':

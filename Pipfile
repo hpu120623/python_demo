@@ -13,6 +13,9 @@ dateparser = "*"
 pymysql = "*"
 schedule = "*"
 click = "*"
+twisted = "*"
+scrapy = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"

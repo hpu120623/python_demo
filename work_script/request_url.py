@@ -1,29 +1,43 @@
 # -*- coding: utf-8 -*-
 # @Author  : Amos.Li
 # @Time    : 2019/3/22 17:56
+import json
+from urllib.parse import quote
+
 import requests
 from retrying import retry
 from pyquery import PyQuery as pq
+from scrapy.selector import Selector
 
 
 @retry(stop_max_attempt_number=3)
 def request_url(request_url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.20 Safari/537.36',
-        # 'Cookie': 'sessionid=D3886C66-E158-4B7A-A03C-174F99DF24C6%7C%7C2019-03-11+16%3A33%3A06.607%7C%7C0; __ah_uuid=ACB03960-39CB-4241-89E2-B851E725356B; fvlid=15522931810576hBpOk59mX; ahpau=1; cookieCityId=110100; autoid=13613cdee96f361b1d37147b6c278b06; sessionvid=CCA16A8E-2A01-4C2E-8607-D17CC68FAE98; sessionuid=D3886C66-E158-4B7A-A03C-174F99DF24C6%7C%7C2019-03-11+16%3A33%3A06.607%7C%7C0; sessionip=114.88.110.51; area=310106; papopclub=C82A2BE6EDCE81088629347479D49E83; pbcpopclub=55273bf8-428e-4d14-963c-88f45925f7a4; pepopclub=29E40913ADF553B8F99A9F5E64E447DB; ahpvno=6; ahrlid=155374300864934uWIpZ9Qb-1553743010820; ref=www.google.com%7C0%7C0%7C0%7C2019-03-28+11%3A16%3A54.546%7C2019-03-28+10%3A43%3A17.724',
-        'Referer': 'http://so.eastmoney.com'
+        'Cookie': 'SINAGLOBAL=172.16.138.137_1552292496.215543; SUBP=0033WrSXqPxfM72-Ws9jqgMF55529P9D9WFdK_niWPrLe.gs43K78Ihb; UOR=,tech.sina.com.cn,; vjuids=857254ee9.169716a5e05.0.22aa3497e81b1; U_TRS1=00000097.278da96b.5c8787c7.ff037556; SUB=_2AkMr4efSf8PxqwJRmP0Wymnrbo1yzAvEieKdvRYJJRMyHRl-yD83qldbtRB6AGHJPQemKU5ssyiKsD-7T9ELXcYet_Uj; Apache=35.220.252.151_1556501449.799959; lxlrttp=1556243090; ULV=1556501503364:15:11:2:35.220.252.151_1556501449.799959:1556446618477; vjlast=1556502372; Hm_lvt_f31b3bde5ef6233a36928514fb59f9cd=1556502854; Hm_lpvt_f31b3bde5ef6233a36928514fb59f9cd=1556502854; UM_distinctid=16a66cde02c314-0e1afe26c3b52c-7a1b34-100200-16a66cde02d55b',
+        # 'Referer': 'http://so.eastmoney.com'
         }
     # proxies = {
     #     'https': 'http://103.46.128.41:57345'
     # }
     response = requests.get(request_url, headers=headers)
+    print(response.status_code)
     # response.encoding = 'utf8'
     # dom = pq(response.text)
     # title = dom('title').text()
-    print(response.text)
+    # print(response.text)
+    selector = Selector(response)
+    url_list = selector.css('h3 a::attr(href)').extract()
+    return url_list
 
+test_url = 'http://db.auto.sina.com.cn/search/?search_txt=%(keyword)s&page=%(page_num)s'
 
-test_url = 'http://api.so.eastmoney.com/bussiness/Web/GetSearchList?type=701&pageindex=3&pagesize=10&keyword=%E8%A7%86%E8%A7%89%E4%B8%AD%E5%9B%BD'
+for i in range(1, 10 + 1):
+    format_url = test_url % {
+        'keyword': quote('奥迪'),
+        'page_num': i
+    }
 
-for i in range(10):
-    request_url(test_url)
+    for url in request_url(format_url):
+        print(f'第{i}页： {url}')
+
