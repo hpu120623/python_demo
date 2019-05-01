@@ -13,6 +13,7 @@ dateparser = "*"
 pymysql = "*"
 schedule = "*"
 click = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.7"
