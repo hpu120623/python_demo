@@ -1,8 +1,6 @@
 import csv
 import json
 import requests
-from pprint import pprint
-
 from utils.common import create_path
 
 # 线上自建系统

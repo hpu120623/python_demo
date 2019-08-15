@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from openpyxl import load_workbook
 
 def open_yu():

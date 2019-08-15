@@ -2,6 +2,10 @@
 # @Author  : Amos.Li
 # @Time    : 2019/3/22 17:56
 import json
+import re
+import hashlib
+from functools import reduce
+from pprint import pprint
 from urllib.parse import quote
 
 import requests
@@ -12,32 +16,55 @@ from scrapy.selector import Selector
 
 @retry(stop_max_attempt_number=3)
 def request_url(request_url):
+    # 配置请求头
+    # print(get_auth_sign(request_url))
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.20 Safari/537.36',
-        'Cookie': 'SINAGLOBAL=172.16.138.137_1552292496.215543; SUBP=0033WrSXqPxfM72-Ws9jqgMF55529P9D9WFdK_niWPrLe.gs43K78Ihb; UOR=,tech.sina.com.cn,; vjuids=857254ee9.169716a5e05.0.22aa3497e81b1; U_TRS1=00000097.278da96b.5c8787c7.ff037556; SUB=_2AkMr4efSf8PxqwJRmP0Wymnrbo1yzAvEieKdvRYJJRMyHRl-yD83qldbtRB6AGHJPQemKU5ssyiKsD-7T9ELXcYet_Uj; Apache=35.220.252.151_1556501449.799959; lxlrttp=1556243090; ULV=1556501503364:15:11:2:35.220.252.151_1556501449.799959:1556446618477; vjlast=1556502372; Hm_lvt_f31b3bde5ef6233a36928514fb59f9cd=1556502854; Hm_lpvt_f31b3bde5ef6233a36928514fb59f9cd=1556502854; UM_distinctid=16a66cde02c314-0e1afe26c3b52c-7a1b34-100200-16a66cde02d55b',
+        # 'Cookie': '_hc.v=1234',
         # 'Referer': 'http://so.eastmoney.com'
-        }
-    # proxies = {
-    #     'https': 'http://103.46.128.41:57345'
-    # }
-    response = requests.get(request_url, headers=headers)
-    print(response.status_code)
-    # response.encoding = 'utf8'
-    # dom = pq(response.text)
-    # title = dom('title').text()
-    # print(response.text)
-    selector = Selector(response)
-    url_list = selector.css('h3 a::attr(href)').extract()
-    return url_list
-
-test_url = 'http://db.auto.sina.com.cn/search/?search_txt=%(keyword)s&page=%(page_num)s'
-
-for i in range(1, 10 + 1):
-    format_url = test_url % {
-        'keyword': quote('奥迪'),
-        'page_num': i
+        # 'x-sign': get_auth_sign(request_url)
     }
+    # 配置代理
+    proxies = {
+        'https': 'http://103.46.128.41:57345'
+    }
+    response = requests.get(request_url, headers=headers)
+    # print(response.url)
+    # print(response.text)
 
-    for url in request_url(format_url):
-        print(f'第{i}页： {url}')
+    # 调用Scrapy中选择器进行解析
+    selector = Selector(response)
+    # 示例如下:
+    # address = selector.css('div.more-class p').xpath('string(.)').extract_first()
+    # 获取所有分类
+    # print(selector.css('.brief-info .address::text').extract()[-1].strip())
+    # li_list = selector.css('.table:nth-child(4) tr')[3:]
+    li_list = selector.xpath('//table/')
+    print(li_list)
+    # # li_dict = {}
+    for li in li_list:
+    #     # li_id = li.css('span.title::text').extract_first()
+    #     # li_name = li.css('::text').extract()[-1].strip()
+    #     # li_dict[li_id] = li_name
+    # # pprint(li_dict)
+        print(li.css('td:nth-child(1) a::attr(href)').extract_first())
 
+
+
+# md5加密
+def md5(code, length=None):
+    res = hashlib.md5(code.encode('utf8')).hexdigest()
+    if length is None:
+        return res
+    else:
+        return res[:length]
+
+
+
+def get_auth_sign(url):
+    url = url.split('/fe_api/')[1]
+    return 'X' + md5(f'/fe_api/{url}WSUDD')
+
+# test_url = 'http://www.dianping.com/shenzhen/ch70/g20009p2'
+test_url = 'http://bbs.jjwxc.net/bindex.php'
+request_url(test_url)
