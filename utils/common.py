@@ -1,10 +1,10 @@
-import datetime
 import os
 import re
 import time
-
 import dateparser
 import moment
+
+from datetime import datetime
 from dateparser.search import search_dates
 from tld import get_fld
 from urllib.parse import quote, unquote
@@ -51,6 +51,7 @@ def create_date():
             date = moment.now().subtract(weeks=4).replace(days=1).format('YYYYMD')
         return date
 
+
 # 解析时间
 def parse_time(time_str):
     def _search_dates(str):
@@ -79,14 +80,14 @@ def parse_time(time_str):
             2、去掉 . 为 -
         '''
         if '月' in time_str and '日' in time_str:
-            time_str = time_str\
-                    .replace('年', '-')\
-                    .replace('月', '-')\
-                    .replace('日', ' ')
+            time_str = time_str \
+                .replace('年', '-') \
+                .replace('月', '-') \
+                .replace('日', ' ')
 
         if '.' in time_str:
-            time_str = time_str\
-                    .replace('.', '-')
+            time_str = time_str \
+                .replace('.', '-')
         return time_str
 
     time_str = _format_date(time_str)
@@ -99,7 +100,7 @@ def parse_time(time_str):
 
     if '刚刚' in time_str or '刚才' in time_str:
         return int(time.time() * 1000)
-    elif len(time_str.split('-')) == 2:
+    elif len(time_str.split('-')) == 2 or '前' in time_str:
         date_tuple = search_dates(str(time_str))
         if date_tuple:
             return int(time.mktime(date_tuple[0][1].timetuple()) * 1000)
@@ -116,3 +117,5 @@ def parse_time(time_str):
                 timestamp = _search_dates(moment_time.format('YYYY-M-D H:m:s'))
         finally:
             return timestamp
+
+print(unquote('https://taizhou.19lou.com/board/list-2?categoryName=%E5%AE%B6%E5%B1%85&searchtype=label&order=hot'))
