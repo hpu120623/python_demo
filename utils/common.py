@@ -117,5 +117,3 @@ def parse_time(time_str):
                 timestamp = _search_dates(moment_time.format('YYYY-M-D H:m:s'))
         finally:
             return timestamp
-
-print(unquote('https://taizhou.19lou.com/board/list-2?categoryName=%E5%AE%B6%E5%B1%85&searchtype=label&order=hot'))
