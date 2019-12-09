@@ -5,7 +5,7 @@ import requests
 from pprint import pprint
 from utils.common import parse_domain
 
-from spiders.user_agent import FakeChromeUA
+from spiders.common.user_agent import FakeChromeUA
 
 class AlexaIndexSpider:
     """
@@ -24,7 +24,8 @@ class AlexaIndexSpider:
         }
 
     def request_alexa(self):
-        request_url = self.alexa_token_url.format(domain=self.url_domain)
+        # request_url = self.alexa_token_url.format(domain=self.url_domain)
+        request_url = 'http://www.alexa.cn/rank/xjtu.edu.cn'
         response = requests.get(request_url, headers=self.headers)
         token = re.findall(r'token : \'(.*)\', domain.*', response.text, re.S)[0]
         return token
@@ -34,6 +35,7 @@ class AlexaIndexSpider:
             token=alexa_token,
             domain=self.url_domain
         )
+        # request_api = 'http://www.alexa.cn/api/alexa/free?token=ce9afad407Jbi9jViUB-EIqqwgBGN1p1aJqbJKmiY5dsnzUt6lj4i9jUBrwPd8-HA-N&url=pumch.cn'
         index_response = requests.get(request_api, headers=self.headers)
         result = json.loads(index_response.text)['data']
         world_index = result['world_rank']              # 全球排名
@@ -50,5 +52,6 @@ if __name__ == '__main__':
 
     alexa = AlexaIndexSpider(test_domain)
     alexa_token = alexa.request_alexa()
-    alexa.request_index(alexa_token)
+    print(alexa_token)
+    # alexa.request_index(alexa_token)
 

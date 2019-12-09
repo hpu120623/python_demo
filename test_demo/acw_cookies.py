@@ -4,7 +4,7 @@ import re
 import requests
 from scrapy import Selector
 
-from spiders.user_agent import FakeChromeUA
+from spiders.common.user_agent import FakeChromeUA
 
 
 class HandleCsdn(object):
