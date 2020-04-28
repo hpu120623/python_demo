@@ -6,7 +6,6 @@ import requests
 import schedule
 from urllib.parse import quote,unquote
 
-from retrying import retry
 from openpyxl import load_workbook
 from retrying import retry
 
