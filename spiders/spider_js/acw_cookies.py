@@ -1,8 +1,8 @@
 import time
-import execjs
+import execjs  # 需要安装pyexecjs库
 import re
 import requests
-from scrapy import Selector
+from parsel import Selector  # parsel为scrapy为xpath、css独立出来的解析库
 
 from spiders.common.user_agent import FakeChromeUA
 
@@ -27,7 +27,7 @@ class HandleCsdn(object):
             # 该值固定
             _0x5e8b26 = '3000176000856006061501533003690027800375'
             # 读取破解JS
-            with open('csdn.js', 'r', encoding='utf-8') as f:
+            with open('../../interesting_demo/csdn.js', 'r', encoding='utf-8') as f:
                 f_read = f.read()
             js = execjs.compile(f_read)
             acw_sc__v2 = js.call("hexXor", _0x5e8b26, arg1_value)

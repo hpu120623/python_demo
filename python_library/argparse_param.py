@@ -4,6 +4,7 @@
 import argparse
 
 
+# python参数传递
 def get_options():
     parser = argparse.ArgumentParser()
 
@@ -12,6 +13,11 @@ def get_options():
 
     return parser.parse_args()
 
+
 def bootstrap():
     options = get_options()
-    run_spider(options.spider_name)
+    print(options.spider_name)
+
+
+if __name__ == '__main__':
+    bootstrap()
