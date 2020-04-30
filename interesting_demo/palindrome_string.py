@@ -7,7 +7,7 @@ Email: hpu120623@126.com
 date: 2020/4/13 11:36
 '''
 
-
+# python实现回文字符串
 def str_solution(test_str):
     s = list(test_str)
     l = len(s)

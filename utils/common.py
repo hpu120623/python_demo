@@ -6,21 +6,22 @@ import dateparser
 import moment
 import datetime
 
-before_days = datetime.date.today() - datetime.timedelta(days=-1)
-ago_time = int(time.mktime(before_days.timetuple()))
-ago_time1 = int(time.mktime(before_days.timetuple())) + (24*60*60) -1
-print(ago_time)
-print(ago_time1)
-
 from datetime import datetime
 from dateparser.search import search_dates
 from tld import get_fld
-from urllib.parse import quote, unquote, urlencode
+from urllib.parse import quote, unquote
 
 
 # 获取N段时间前time
 def get_day_time(n):
     return int(time.mktime(dateparser.parse(n).timetuple())) * 1000
+
+
+# 获取N天前时间
+def before_time(n=-1):
+    before_days = datetime.date.today() - datetime.timedelta(days=n)
+    ago_time = int(time.mktime(before_days.timetuple()))
+    ago_time1 = int(time.mktime(before_days.timetuple())) + (24 * 60 * 60) - 1
 
 
 # 获取文件路径
@@ -149,18 +150,3 @@ def parse_time(time_str):
                 timestamp = _search_dates(moment_time.format('YYYY-M-D H:m:s'))
         finally:
             return timestamp
-
-# print(quote('北京协和医院'))
-# print(unquote('https://www.baidu.com/s?wd=%E4%B8%8A%E6%B5%B7%E5%84%BF%E7%AB%A5%E5%8C%BB%E9%99%A2&gpc=stf%3D1575734400%2C1575907198%7Cstftype%3D2'))
-search_url = 'https://www.baidu.com/s?wd={keyword}&gpc='
-hospital_name = '北京协和医院'
-start_time = 1575734400
-end_time = 1575907198
-# print('stf={start},{end}|stftype=2'.format(start=start_time, end=end_time))
-request_url = search_url.format(keyword=hospital_name) + quote('stf={start},{end}|stftype=2').format(start=start_time, end=end_time)
-print(request_url)
-print(unquote('https://www.baidu.com/s?wd=%E5%8C%97%E4%BA%AC%E5%8D%8F%E5%92%8C%E5%8C%BB%E9%99%A2&gpc=stf%3D%7Bstart%7D%2C%7Bend%7D%7Cstftype%3D2'))
-
-
-
-

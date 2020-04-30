@@ -7,6 +7,7 @@ from utils.common import parse_domain
 
 from spiders.common.user_agent import FakeChromeUA
 
+
 class AlexaIndexSpider:
     """
     获取网站Alexa国内国外排名
@@ -38,12 +39,10 @@ class AlexaIndexSpider:
         # request_api = 'http://www.alexa.cn/api/alexa/free?token=ce9afad407Jbi9jViUB-EIqqwgBGN1p1aJqbJKmiY5dsnzUt6lj4i9jUBrwPd8-HA-N&url=pumch.cn'
         index_response = requests.get(request_api, headers=self.headers)
         result = json.loads(index_response.text)['data']
-        world_index = result['world_rank']              # 全球排名
-        country_index = result['country_rank']          # 国家排名
-        country_area = result['country_code']           # 国家/地区
+        world_index = result['world_rank']  # 全球排名
+        country_index = result['country_rank']  # 国家排名
+        country_area = result['country_code']  # 国家/地区
         pprint(result)
-
-
 
 
 if __name__ == '__main__':
@@ -52,6 +51,4 @@ if __name__ == '__main__':
 
     alexa = AlexaIndexSpider(test_domain)
     alexa_token = alexa.request_alexa()
-    print(alexa_token)
-    # alexa.request_index(alexa_token)
-
+    alexa.request_index(alexa_token)

@@ -3,30 +3,25 @@
 # @Time    : 2019/3/22 17:56
 import requests
 from retrying import retry
-from scrapy.selector import Selector
+from parsel import Selector
 from urllib.parse import urljoin
-from pyquery import PyQuery as pq
 
 
 @retry(stop_max_attempt_number=3)
 def caoliu(request_url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.20 Safari/537.36',
-        }
+    }
 
     response = requests.get(request_url, headers=headers)
     response.encoding = 'utf8'
-    # print(response.url)
     selector = Selector(response)
     result_list = selector.css('table tr.tr3')
     for result in result_list:
-        # print(2111)
         url = result.css('h3 a::attr(href)').extract_first()
         title = result.css('h3 a::text').extract_first()
-        # print(title)
-        if title and '波多野' in title:
+        if title and 'xxx' in title:
             print(f'title:{title}: {urljoin(response.url, url)}')
-
 
 
 def main():

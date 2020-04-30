@@ -4,5 +4,5 @@
 
 from selenium import webdriver
 
-driver = webdriver.Chrome(executable_path="E:/Projects/software/chromedriver")
+driver = webdriver.Chrome(executable_path="D:/Software/chromedriver")
 driver.get('https://www.baidu.com/')

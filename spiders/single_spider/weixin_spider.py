@@ -5,22 +5,18 @@ from pprint import pprint
 
 from spiders.common.user_agent import FakeChromeUA
 
-
-
-
-
-
 headers = {
     'User-Agent': FakeChromeUA.get_ua()
-    }
+}
 
 form_data = {
-    '__biz':'MzIxNjM4NDE2MA==',
-    'mid':'2247491827',
-    'sn':'2e41e2b83e00b17f404265db739c5175',
-    'idx':1,
-    'scene':38,
+    '__biz': 'MzIxNjM4NDE2MA==',
+    'mid': '2247491827',
+    'sn': '2e41e2b83e00b17f404265db739c5175',
+    'idx': 1,
+    'scene': 38,
 }
+
 
 def get_wx_article(biz, uin, key, offset=0, count=10):
     article_list_api = 'https://mp.weixin.qq.com/mp/profile_ext'

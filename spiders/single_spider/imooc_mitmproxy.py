@@ -12,7 +12,6 @@ import json
 def response(flow):
     # if 'high.m3u8?'in flow.request.url:
     if 'high.jpg?cdn=aliyun1'in flow.request.url:
-        print('请求成功，来来来')
         print(json.loads(flow.response.text)['msg'])
         with open('info.txt', 'a') as f:
             f.write(flow.response.text)
