@@ -150,3 +150,6 @@ def parse_time(time_str):
                 timestamp = _search_dates(moment_time.format('YYYY-M-D H:m:s'))
         finally:
             return timestamp
+
+test_url = 'https://public.creditchina.gov.cn/private-api/catalogSearchHome?keyword=%E5%A3%B9%E6%B2%93%E7%A7%91%E6%8A%80&scenes=defaultScenario&tableName=credit_xyzx_tyshxydm&searchState=2&entityType=1%2C2%2C4%2C5%2C6%2C7%2C8&page=1&pageSize=10'
+print(unquote_url(test_url))

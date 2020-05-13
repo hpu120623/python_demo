@@ -8,7 +8,7 @@ from urllib.parse import urljoin
 
 
 @retry(stop_max_attempt_number=3)
-def caoliu(request_url):
+def search_data(request_url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.20 Safari/537.36',
     }
@@ -27,7 +27,7 @@ def caoliu(request_url):
 def main():
     request_url = 'http://z1.1080pgqzz.info/pw/thread.php?fid=22&type=2&page={page_num}'
     for i in range(1, 51):
-        caoliu(request_url.format(page_num=i))
+        search_data(request_url.format(page_num=i))
 
 
 if __name__ == '__main__':

@@ -7,12 +7,13 @@ import requests
 
 from parsel import Selector
 from spiders.common.random_proxy import *
+from spiders.common.user_agent import FakeChromeUA
 from utils.common import md5
 
 from pymongo import MongoClient
 
 client = MongoClient('127.0.0.1', 27017)
-collection = client['search_cookies']['so_cookies']
+collection = client['test_data']['so_cookies']
 
 proxy = {
     'http': RandomProxy().SHORT_PROXY,
@@ -23,10 +24,15 @@ proxy = {
 def get_guid():
     url = 'https://www.so.com'
 
-    response = requests.get(url, headers=None)
+    headers = {
+        'User-Agent': FakeChromeUA.get_ua()
+    }
+    response = requests.get(url, headers=headers)
     response.encoding = 'utf8'
     # guid = response.cookies.get_dict().get('QiHooGUID', '')
-    cookies = response.request.headers['Cookie']
+
+    print(response.request.headers)
+    cookies = response.request.headers['cookie']
     if 'QiHooGUID' in cookies:
         guid = re.findall(r'QiHooGUID=(.*?);', cookies)[0]
         collection.insert_one({'_id': md5(guid), 'guid': guid})
@@ -52,6 +58,6 @@ def so_search(guid):
 
 
 if __name__ == '__main__':
-    guid = list(collection.find().limit(1))[0]['guid']
-    for i in range(100):
-        so_search(guid)
+    get_guid()
+    # for i in range(100):
+    #     so_search(guid)
